@@ -23,6 +23,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final boolean DUG = true;
 
 
+    private static final String SYNC_MARKER_KEY = "com.snail.sync.marker";
+
+
     private final Context mContext;
 
     private final AccountManager mAccountManager;
@@ -43,7 +46,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         long lastSyncMarker = getServerSyncMarker(account);
 
         //make sure the group exists
-        final long groupId = ContactManager.ensureSampleGroupExists(mContext, account);
+        final long groupId = ContactManager.ensureSnailGroupExists(mContext, account);
 
         //get mark local contact
         dirtyContacts = ContactManager.getDirtyContacts(mContext, account);

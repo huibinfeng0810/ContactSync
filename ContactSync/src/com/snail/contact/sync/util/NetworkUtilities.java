@@ -4,7 +4,6 @@ import android.accounts.Account;
 import android.util.Log;
 import com.snail.contact.sync.contact.CloudContact;
 import com.snail.contact.sync.contact.RawContact;
-import com.snail.contact.sync.test.json.JsonTest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -107,7 +106,7 @@ public class NetworkUtilities {
 
 //            for (int i = 0; i < serverContacts.length(); i++) {
 
-            RawContact rawContact = JsonTest.createContact();
+            RawContact rawContact = null;
 
             if (rawContact != null) {
 
@@ -139,11 +138,11 @@ public class NetworkUtilities {
 
         params.add(new BasicNameValuePair(RawContact.Constant.dLastModifyTime, rawContact.getdLastModifyTime()));
 
-        params.add(new BasicNameValuePair(RawContact.Constant.phone, rawContact.getPhone()));
+//        params.add(new BasicNameValuePair(RawContact.Constant.phone, rawContact.getPhone()));
 
-        params.add(new BasicNameValuePair(RawContact.Constant.group, rawContact.getGroup()));
+//        params.add(new BasicNameValuePair(RawContact.Constant.group, rawContact.getGroup()));
 
-        params.add(new BasicNameValuePair(RawContact.Constant.email, rawContact.getEmail()));
+//        params.add(new BasicNameValuePair(RawContact.Constant.email, rawContact.getEmail()));
 
         params.add(new BasicNameValuePair(RawContact.Constant.sContactData, rawContact.getsContactData()));
 
@@ -157,9 +156,9 @@ public class NetworkUtilities {
 
         params.add(new BasicNameValuePair(RawContact.Constant.dBirthday, rawContact.getdBirthday()));
 
-        params.add(new BasicNameValuePair(RawContact.Constant.address, rawContact.getAddress()));
+//        params.add(new BasicNameValuePair(RawContact.Constant.address, rawContact.getAddress()));
 
-        params.add(new BasicNameValuePair(RawContact.Constant.website, rawContact.getWebsite()));
+//        params.add(new BasicNameValuePair(RawContact.Constant.website, rawContact.getWebsite()));
 
         final HttpPost post = new HttpPost(UPLOAD_CONTACTS_URI);
 

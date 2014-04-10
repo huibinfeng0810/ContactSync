@@ -5,7 +5,7 @@ package com.snail.contact.sync;
  */
 public class Constants {
 
-    public static final String ACCOUNT_TYPE = "com.example.android.samplesync";
+    public static final String ACCOUNT_TYPE = "com.google";
 
     public static final String AUTHTOKEN_TYPE = "com.example.android.samplesync";
 }

@@ -21,7 +21,7 @@ public class ContactManager {
 
     private static final boolean DUG = true;
 
-    public static final String SAMPLE_GROUP_NAME = "Sample Group";
+    public static final String SNAIL_GROUP_NAME = "Snail Group";
 
     /**
      * update local contact data
@@ -220,9 +220,6 @@ public class ContactManager {
     }
 
     private static RawContact getRawContact(Context context, long rawContactId) {
-
-//        RawContact rawContact = RawContact.create(uuid, sContactFirstName, sContactLastName, dLastModifyTime,
-//                phones, groups, sContactData, status, sContactFullName, sComment, sNickname, dBirthday, addresses, websites);
         String uuid = null;
 
         String sContactFirstName = null;
@@ -562,10 +559,6 @@ public class ContactManager {
                 ContactsContract.RawContacts.DIRTY + "=1 AND "
                         + ContactsContract.RawContacts.ACCOUNT_TYPE + "='" + Constants.ACCOUNT_TYPE + "' AND "
                         + ContactsContract.RawContacts.ACCOUNT_NAME + "=?";
-
-        private DirtyQuery() {
-        }
-
     }
 
     /**
@@ -610,7 +603,7 @@ public class ContactManager {
     }
 
 
-    public static long ensureSampleGroupExists(Context context, Account account) {
+    public static long ensureSnailGroupExists(Context context, Account account) {
         final ContentResolver resolver = context.getContentResolver();
 
         long groupId = 0;
@@ -618,15 +611,33 @@ public class ContactManager {
         final String[] projection = new String[]{ContactsContract.Groups._ID};
         final String selection = ContactsContract.Groups.ACCOUNT_NAME + "=? AND " + ContactsContract.Groups.ACCOUNT_TYPE +
                 "=? AND " + ContactsContract.Groups.TITLE + "=?";
-        final String[] selectionArgs = new String[]{account.name, account.type, SAMPLE_GROUP_NAME};
+        final String[] selectionArgs = new String[]{account.name, account.type, SNAIL_GROUP_NAME};
         final String sortOder = null;
 
         final Cursor cursor = resolver.query(ContactsContract.Groups.CONTENT_URI, projection, selection, selectionArgs,
                 sortOder);
 
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    groupId = cursor.getLong(0);
+                }
+            } finally {
+                cursor.close();
+            }
+        }
 
+        //if the group not exist, create snail group
+        if (groupId == 0) {
+            final ContentValues contentValues = new ContentValues();
+            contentValues.put(ContactsContract.Groups.ACCOUNT_NAME, account.name);
+            contentValues.put(ContactsContract.Groups.ACCOUNT_TYPE, account.type);
+            contentValues.put(ContactsContract.Groups.TITLE, SNAIL_GROUP_NAME);
+            contentValues.put(ContactsContract.Groups.GROUP_IS_READ_ONLY, true);
 
-
+            final Uri newGroupUri = resolver.insert(ContactsContract.Groups.CONTENT_URI, contentValues);
+            groupId = ContentUris.parseId(newGroupUri);
+        }
+        return groupId;
     }
-
 }
