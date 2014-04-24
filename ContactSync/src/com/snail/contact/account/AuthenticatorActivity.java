@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.snail.contact.sync.Constants;
 import com.snail.contact.sync.R;
+import com.snail.contact.sync.util.NetworkUtilities;
 import org.w3c.dom.Text;
 
 /**
@@ -176,7 +177,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity implemen
     private void finishLogin(String authToken) {
 
         Log.i(TAG, "finishLogin()");
-        final Account account = new Account(mUsername, Constants.ACCOUNT_TYPE);
+        final Account account = new Account(mUsername, Constants.SNAIL_ACCOUNT_TYPE);
         if (mRequestNewAccount) {
             mAccountManager.addAccountExplicitly(account, mPassword, null);
             // Set contacts sync for this account.
@@ -230,7 +231,9 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity implemen
         }
     }
 
-
+    /**
+     * async task for login
+     */
     public class UserLoginTask extends AsyncTask<Void, Void, String> {
 
         @Override
@@ -238,8 +241,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity implemen
             // We do the actual work of authenticating the user
             // in the NetworkUtilities class.
             try {
-//                return NetworkUtilities.authenticate(mUsername, mPassword);
-                return null;
+                return NetworkUtilities.authenticate(mUsername, mPassword);
             } catch (Exception ex) {
                 Log.e(TAG, "UserLoginTask.doInBackground: failed to authenticate");
                 Log.i(TAG, ex.toString());
@@ -283,14 +285,14 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity implemen
      * handle login
      */
     private final void handleLogin() {
-        String username = mUsernameEdit.getText().toString();
-        String password = mPasswordEdit.getText().toString();
+        mUsername = mUsernameEdit.getText().toString();
+        mPassword = mPasswordEdit.getText().toString();
 
-        if (TextUtils.isEmpty(username) && TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(mUsername) && TextUtils.isEmpty(mPassword)) {
             showToast("username and password cannot be empty!");
-        } else if (TextUtils.isEmpty(username)) {
+        } else if (TextUtils.isEmpty(mUsername)) {
             showToast("username cannot be empty!");
-        } else if (TextUtils.isEmpty(password)) {
+        } else if (TextUtils.isEmpty(mPassword)) {
             showToast("password cannot be empty!");
         } else {
             mAuthTask = new UserLoginTask();

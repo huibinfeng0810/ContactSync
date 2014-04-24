@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ACTIVITY_ENTRY_NAME</string>
+    <string name="app_name">游戏蜗牛</string>
     <string name="login">登陆</string>
     <string name="regist">注册</string>
 

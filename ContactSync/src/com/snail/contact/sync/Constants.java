@@ -8,4 +8,6 @@ public class Constants {
     public static final String ACCOUNT_TYPE = "com.google";
 
     public static final String AUTHTOKEN_TYPE = "com.example.android.samplesync";
+
+    public static final String SNAIL_ACCOUNT_TYPE = "com.snail.contact.sync";
 }

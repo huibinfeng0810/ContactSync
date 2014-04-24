@@ -26,6 +26,7 @@
             android:background="@drawable/login_edit_bg">
 
         <EditText
+                android:textColor="@android:color/darker_gray"
                 android:id="@+id/username_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,6 +41,7 @@
         <requestFocus/>
 
         <EditText
+                android:textColor="@android:color/darker_gray"
                 android:id="@+id/password_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
