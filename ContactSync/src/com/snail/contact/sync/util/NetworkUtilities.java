@@ -18,6 +18,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -39,9 +40,9 @@ public class NetworkUtilities {
 
     public static final int HTTP_REQUEST_TIMEOUT_MS = 30 * 1000;
 
-    public static final String BASE_URL = "http://10.206.0.59";
+    public static final String BASE_URL = "http://mycontactsync.sinaapp.com/";
 
-    public static final String DOWNLOAD_CONTACTS_URI = BASE_URL + "/mobile/platform/cloud/storage/user/contact/list";
+    public static final String LOGIN_URI = BASE_URL + "login";
 
     public static final String UPLOAD_CONTACTS_URI = BASE_URL + "/mobile/platform/cloud/storage/user/contact";
 
@@ -79,7 +80,7 @@ public class NetworkUtilities {
 
         params.setParameter(ARGS, ARGS);
 
-        final HttpGet get = new HttpGet(DOWNLOAD_CONTACTS_URI);
+        final HttpGet get = new HttpGet(LOGIN_URI);
 
         get.setParams(params);
 
@@ -192,4 +193,50 @@ public class NetworkUtilities {
 
     }
 
+    //login
+    public static String authenticate(String name, String password) {
+        String access_token = new String();
+
+        String loginUrl = setGetParameter(LOGIN_URI, "username", name);
+        loginUrl = setGetParameter(loginUrl, "password", password);
+
+        final HttpGet get = new HttpGet(loginUrl);
+        if (DUG) {
+            LogUtil.d(TAG, "url", get.getURI().toString());
+        }
+
+
+        final HttpResponse resp;
+        try {
+            resp = getHttpClient().execute(get);
+
+            final String response = EntityUtils.toString(resp.getEntity());
+
+            JSONObject jsonObject = new JSONObject(response);
+            access_token = jsonObject.getString("access_token");
+
+
+            if (DUG) {
+                LogUtil.d(TAG, "result", response);
+                LogUtil.d(TAG, "access_token", access_token);
+            }
+
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage());
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return access_token;
+    }
+
+    //set parameter for get
+    private static final String setGetParameter(String url, String key, String value) {
+        StringBuffer buffer = new StringBuffer(url);
+        if (url.indexOf("?") == -1) {
+            buffer.append("?").append(key).append("=").append(value);
+        } else {
+            buffer.append("&").append(key).append("=").append(value);
+        }
+        return buffer.toString();
+    }
 }

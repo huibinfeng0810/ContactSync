@@ -17,6 +17,11 @@
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"></uses-permission>
     <uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
 
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
 
@@ -24,12 +29,37 @@
         <uses-library android:name="android.test.runner"/>
 
         <!-- activity-->
-        <activity android:name=".HomeActivity"
-                  android:label="@string/app_name">
+        <activity android:name="com.snail.contact.HomeActivity"
+                >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+
+        <activity
+                android:name="com.snail.contact.account.AuthenticatorActivity"
+                android:excludeFromRecents="true"
+                android:configChanges="orientation"
+
+                />
+        <!-- The authenticator service -->
+        <!--service-->
+
+        <service
+                android:name="com.snail.contact.account.AuthenticationService"
+                android:exported="true"
+                android:process=":auth">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+
+            <meta-data
+                    android:name="android.accounts.AccountAuthenticator"
+                    android:resource="@xml/authenticator"/>
+        </service>
+
     </application>
 </manifest>
